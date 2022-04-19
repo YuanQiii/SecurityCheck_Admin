@@ -2,7 +2,7 @@
  * @Author: YuanQiii
  * @GitHub: https://github.com/YuanQiii
  * @Date: 2022-04-05 16:52:10
- * @FilePath: \vue_manage\src\views\pms\list\ProductDatasheets.vue
+ * @FilePath: \SecurityCheck_Admin\src\views\pms\yc\components\ProductDatasheets.vue
 -->
 <template>
   <div class="product-datasheets">
@@ -25,6 +25,11 @@
         </el-table-column>
         <el-table-column label="公司" width="120" align="center">
           <template slot-scope="scope">{{ scope.row.company }}</template>
+        </el-table-column>
+        <el-table-column label="二维码" width="120" align="center">
+          <template slot-scope="scope"
+            ><img :src="getImage(scope.row.image)" alt="" class="image"
+          /></template>
         </el-table-column>
         <el-table-column label="查询地址" align="center">
           <template slot-scope="scope">{{ scope.row.queryUrl }}</template>
@@ -79,8 +84,11 @@ export default {
     handleSelectionChange(selection) {
       this.$emit("selectionChange", selection);
     },
+    getImage(str) {
+      return `data:image/png;base64,${str}`;
+    },
     handleDelete(value) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -103,5 +111,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.image {
+  width: 100px;
+  display: block;
+}
 </style>
