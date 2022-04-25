@@ -37,26 +37,31 @@
         <el-table-column label="查询地址" align="center">
           <template slot-scope="scope">{{ scope.row.queryUrl }}</template>
         </el-table-column>
-        <el-table-column label="首次查询时间" align="center" width="100">
+        <el-table-column label="首次查询时间" align="center" width="120">
           <template slot-scope="scope">{{
             scope.row.firstQueryTime | timeFormat
           }}</template>
         </el-table-column>
-        <el-table-column label="查询次数" width="50" align="center">
+        <el-table-column label="查询次数" width="100" align="center">
           <template slot-scope="scope">{{ scope.row.queryCount }}</template>
+        </el-table-column>
+        <el-table-column label="是否导出" width="100" align="center">
+          <template slot-scope="scope">{{
+            scope.row.exportExcel | exportFormat
+          }}</template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" width="100">
           <template slot-scope="scope">{{ scope.row.createTime }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <!-- <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <!-- <p>
+            <p>
               <el-button
                 size="mini"
                 @click="handleUpdateProduct(scope.$index, scope.row)"
                 >编辑
               </el-button>
-            </p> -->
+            </p>
             <p>
               <el-button
                 size="mini"
@@ -66,7 +71,7 @@
               </el-button>
             </p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
   </div>
@@ -86,11 +91,14 @@ export default {
     },
   },
   filters: {
-    timeFormat(timeStr) {
-      if (!timeStr) {
+    timeFormat(str) {
+      if (!str) {
         return NaN;
       }
-      return timeStr;
+      return str;
+    },
+    exportFormat(str) {
+      return str ? "是" : "否";
     },
   },
   methods: {
