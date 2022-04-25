@@ -22,3 +22,18 @@ export function ycBatchAddApi(count) {
         }
     });
 }
+
+// 批量导出数据
+export function ycBatchExportApi(count) {
+    return request({
+        url: "/ycBatchExport",
+        method: "get",
+        params: {
+            count
+        },
+        responseType: 'blob',
+        headers: {
+            'Content-Type': 'application/x-download'
+        }
+    });
+}

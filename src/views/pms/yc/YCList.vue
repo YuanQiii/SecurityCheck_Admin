@@ -10,6 +10,9 @@
       <el-button class="btn-add" @click="handleBatchAdd" size="mini">
         批量添加
       </el-button>
+      <el-button class="btn-add" @click="handleExport" size="mini">
+        导出到Excel
+      </el-button>
     </el-card>
 
     <product-datasheets
@@ -39,6 +42,8 @@
         <el-form-item label="数量" prop="count">
           <el-input
             v-model="addCount.count"
+            min="0"
+            max="10000"
             auto-complete="off"
             type="number"
           ></el-input>
@@ -49,11 +54,35 @@
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      :title="dialogExportTitle"
+      :visible.sync="dialogExportVisible"
+      :before-close="handleClose"
+      :show-close="false"
+      width="30%"
+    >
+      <el-form ref="exportExcelForm" :model="exportCount" label-width="120px">
+        <el-form-item label="数量" prop="count">
+          <el-input
+            v-model="exportCount.count"
+            min="0"
+            max="10000"
+            auto-complete="off"
+            type="number"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogExportVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleExportConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ycProductListApi, ycBatchAddApi } from "@/api/yc";
+import { ycProductListApi, ycBatchAddApi, ycBatchExportApi } from "@/api/yc";
 
 import ProductFilter from "./components/ProductFilter.vue";
 import ProductOperate from "./components/ProductOperate.vue";
@@ -77,15 +106,26 @@ export default {
       selectList: [],
       listConfig: {},
       pageConfig: {
-        pageSize: 5,
+        pageSize: 10,
         pageNum: 1,
       },
-      dialogTitle: "添加数据数量",
+      dialogTitle: "添加数据数量(最大值为10000)",
       dialogVisible: false,
+      dialogExportTitle: "导出数据量(最大值为10000)",
+      dialogExportVisible: false,
       addCount: {
-        count: 0,
+        count: 1,
+      },
+      exportCount: {
+        count: 10000,
       },
     };
+  },
+
+  watch: {
+    "addCount.count"(newVal) {
+      this.addCount.count = Math.min(parseInt(newVal), 10000);
+    },
   },
 
   methods: {
@@ -142,9 +182,13 @@ export default {
     handleBatchAdd() {
       this.dialogVisible = true;
     },
+    handleExport() {
+      this.dialogExportVisible = true;
+    },
     handleClose() {
       if (!this.dialogVisible && this.$refs.addCountForm) {
         this.$refs.addCountForm.clearValidate();
+        this.$refs.exportExcelForm.clearValidate();
       }
     },
     handleConfirm() {
@@ -152,10 +196,32 @@ export default {
       if (count) {
         ycBatchAddApi(count).then((response) => {
           this.getProductList();
+          this.loading = false;
         });
         this.loading = true;
       }
       this.dialogVisible = false;
+    },
+    handleExportConfirm() {
+      let count = this.exportCount.count;
+      if (count) {
+        this.loading = true;
+        ycBatchExportApi(count).then((response) => {
+          this.downloadExcel(response);
+          this.loading = false;
+        });
+        this.dialogExportVisible = false;
+      }
+    },
+
+    downloadExcel(res) {
+      const link = document.createElement("a");
+      link.style.display = "none";
+      link.href = URL.createObjectURL(res);
+      link.setAttribute("download", `${Date.now()}-1W.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
 };
@@ -178,6 +244,7 @@ export default {
     }
     .btn-add {
       float: right;
+      margin-right: 10px;
     }
   }
   .list {

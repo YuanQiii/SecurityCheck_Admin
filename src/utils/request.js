@@ -11,8 +11,8 @@ import { getToken } from "@/utils/auth";
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/index/", // api的base_url
-  timeout: 15000, // 请求超时时间
+  baseURL: "http://www.qcpjfwcx.com:8099/api/index/", // api的base_url
+  timeout: 30000, // 请求超时时间
 });
 
 // request拦截器
@@ -36,16 +36,15 @@ service.interceptors.response.use(
     /**
      * code为非200是抛错 可结合自己业务进行修改
      */
-    const res = response.data;
-    if (res.code !== 200) {
+    if (response.status !== 200) {
       Message({
-        message: res.message,
+        message: '200',
         type: "error",
         duration: 3 * 1000,
       });
 
       // 401:未登录;
-      if (res.code === 401) {
+      if (response.status === 401) {
         MessageBox.confirm(
           "你已被登出，可以取消继续留在该页面，或者重新登录",
           "确定登出",

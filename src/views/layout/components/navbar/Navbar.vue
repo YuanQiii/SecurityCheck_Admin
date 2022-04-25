@@ -6,11 +6,11 @@
 -->
 <template>
   <div class="navbar">
-    <hamburger
+    <!-- <hamburger
       @click.native="UPDATE_SIDEBAR_STATUS"
       :isActive="Boolean(sidebarStatus)"
       class="hamburger"
-    />
+    /> -->
     <breadcrumb class="breadcrumb" />
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -59,6 +59,7 @@ export default {
 <style lang="less" scoped>
 .navbar {
   display: flex;
+  margin-bottom: 40px;
   .hamburger {
     margin-left: 5px;
     margin-right: 20px;

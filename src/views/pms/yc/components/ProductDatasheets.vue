@@ -20,10 +20,13 @@
           width="60"
           align="center"
         ></el-table-column>
-        <el-table-column label="序列码" align="center">
+        <el-table-column label="id" align="center" width="100">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column label="公司" width="120" align="center">
+        <el-table-column label="序列码" align="center" width="94">
+          <template slot-scope="scope">{{ scope.row.sequenceCode }}</template>
+        </el-table-column>
+        <el-table-column label="公司" width="60" align="center">
           <template slot-scope="scope">{{ scope.row.company }}</template>
         </el-table-column>
         <el-table-column label="二维码" width="120" align="center">
@@ -34,13 +37,15 @@
         <el-table-column label="查询地址" align="center">
           <template slot-scope="scope">{{ scope.row.queryUrl }}</template>
         </el-table-column>
-        <el-table-column label="首次查询时间" align="center">
-          <template slot-scope="scope">{{ scope.row.firstQueryTime }}</template>
+        <el-table-column label="首次查询时间" align="center" width="100">
+          <template slot-scope="scope">{{
+            scope.row.firstQueryTime | timeFormat
+          }}</template>
         </el-table-column>
-        <el-table-column label="查询次数" width="120" align="center">
+        <el-table-column label="查询次数" width="50" align="center">
           <template slot-scope="scope">{{ scope.row.queryCount }}</template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="创建时间" align="center" width="100">
           <template slot-scope="scope">{{ scope.row.createTime }}</template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
@@ -78,6 +83,14 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+  },
+  filters: {
+    timeFormat(timeStr) {
+      if (!timeStr) {
+        return NaN;
+      }
+      return timeStr;
     },
   },
   methods: {

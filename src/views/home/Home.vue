@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="total-layout">
+    <!-- <div class="total-layout">
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="total-frame">
@@ -250,7 +250,9 @@
           </div>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
+
+    待定......
   </div>
 </template>
 

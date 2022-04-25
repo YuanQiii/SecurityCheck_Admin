@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="product-operate">
-    <div class="batch-operate-container">
+    <!-- <div class="batch-operate-container">
       <el-select size="small" v-model="operateType" placeholder="批量操作">
         <el-option
           v-for="item in operates"
@@ -25,14 +25,14 @@
       >
         确定
       </el-button>
-    </div>
+    </div> -->
 
     <div class="pagination-container">
       <el-pagination
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
+        layout="total, sizes ,prev, pager, next, jumper"
         :page-size="pageConfig.pageSize"
         :page-sizes="[5, 10, 15]"
         :current-page.sync="pageConfig.pageNum"
@@ -66,7 +66,7 @@ export default {
         },
       ],
       pageConfig: {
-        pageSize: 5,
+        pageSize: 10,
         pageNum: 1,
       },
     };
@@ -105,7 +105,7 @@ export default {
 <style lang="less" scoped>
 .product-operate {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row-reverse;
   margin-left: 20px;
   margin-top: 20px;
 }
