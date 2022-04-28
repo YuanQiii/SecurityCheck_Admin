@@ -4,7 +4,6 @@
     <el-form
       autoComplete="on"
       :model="loginForm"
-      :rules="loginRules"
       ref="loginForm"
       label-position="left"
     >
@@ -62,8 +61,8 @@
 <script>
 import { setCookie, getCookie } from "@/utils/user";
 
-import { adminLoginApi } from "@/api/user";
-import { setToken, removeToken } from "@/utils/auth";
+import { loginApi } from "@/api/user";
+import { setToken } from "@/utils/auth";
 import { mapMutations } from "vuex";
 
 export default {
@@ -91,37 +90,12 @@ export default {
         username: "",
         password: "",
       },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: this.validateUsername },
-        ],
-        password: [
-          { required: true, trigger: "blur", validator: this.validatePassword },
-        ],
-      },
       loading: false,
       pwdType: "password",
     };
   },
   methods: {
     ...mapMutations("user", ["SET_TOKEN"]),
-
-    validateUsername(rule, value, callback) {
-      let temp = value.trim();
-      console.log(temp);
-      if (temp == "admin" || temp == "productAdmin" || temp == "orderAdmin") {
-        callback();
-      } else {
-        callback(new Error("请输入正确的用户名"));
-      }
-    },
-    validatePassword(rule, value, callback) {
-      if (value == "123456") {
-        callback();
-      } else {
-        callback(new Error("密码错误"));
-      }
-    },
     showPwd() {
       if (this.pwdType === "password") {
         this.pwdType = "";
@@ -133,16 +107,26 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          adminLoginApi().then((response) => {
-            setCookie("username", this.loginForm.username, 15);
-            setCookie("password", this.loginForm.password, 15);
-            setToken(response.token);
+          loginApi(this.loginForm.username, this.loginForm.password).then(
+            (response) => {
+              if (response.message == "操作成功") {
+                setCookie("username", this.loginForm.username, 15);
+                setCookie("password", this.loginForm.password, 15);
+                setToken(response.token);
 
-            this.SET_TOKEN(response.token);
+                this.SET_TOKEN(response.token);
 
-            this.$router.push({ path: "/" });
-            this.loading = false;
-          });
+                this.$router.push({ path: "/" });
+              } else {
+                this.$message({
+                  message: response.message,
+                  type: "error",
+                });
+              }
+
+              this.loading = false;
+            }
+          );
         } else {
           console.log("参数验证不合法！");
         }
