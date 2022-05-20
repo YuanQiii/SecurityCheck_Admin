@@ -80,12 +80,12 @@
 </template>
 
 <script>
-import { ycProductListApi, ycBatchAddApi, ycBatchExportApi } from "@/api/yc";
+import { xcProductListApi, xcBatchAddApi, xcBatchExportApi } from "@/api/xc";
 
 import ProductOperate from "./components/ProductOperate.vue";
 import ProductDatasheets from "./components/ProductDatasheets.vue";
 export default {
-  name: "YCList",
+  name: "XCList",
   components: {
     ProductOperate,
     ProductDatasheets,
@@ -128,7 +128,7 @@ export default {
     //  获取商品
     getProductList() {
       this.loading = true;
-      ycProductListApi(this.pageConfig.pageSize, this.pageConfig.pageNum).then(
+      xcProductListApi(this.pageConfig.pageSize, this.pageConfig.pageNum).then(
         (response) => {
           console.log(response);
           this.dataList = response.data.list;
@@ -190,7 +190,7 @@ export default {
     handleConfirm() {
       let count = this.addCount.count;
       if (count) {
-        ycBatchAddApi(count).then((response) => {
+        xcBatchAddApi(count).then((response) => {
           this.getProductList();
           this.loading = false;
         });
@@ -202,7 +202,7 @@ export default {
       let count = this.exportCount.count;
       if (count) {
         this.loading = true;
-        ycBatchExportApi(count).then((response) => {
+        xcBatchExportApi(count).then((response) => {
           this.downloadExcel(response);
           this.loading = false;
         });

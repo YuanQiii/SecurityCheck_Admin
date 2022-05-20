@@ -2,25 +2,12 @@
  * @Author: YuanQiii
  * @GitHub: https://github.com/YuanQiii
  * @Date: 2022-04-01 21:21:41
- * @FilePath: \vue_manage\src\router\index.js
+ * @FilePath: \SecurityCheck_Admin\src\router\index.js
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
-
-/**
- * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
- *                                if not set alwaysShow, only more than one route under the children
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    title: 'title'               the name show in submenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar,
-  }
- **/
 
 const Login = () => import("@/views/login/Login.vue");
 const wrongPage = () => import("@/views/404/wrongPage.vue");
@@ -28,11 +15,12 @@ const Layout = () => import("@/views/layout/Layout.vue");
 
 const Home = () => import("@/views/home/Home.vue");
 const YCList = () => import("@/views/pms/yc/YCList.vue");
+const XCList = () => import("@/views/pms/xc/XCList.vue");
 const WCList = () => import("@/views/pms/wc/WCList.vue");
+const AumanList = () => import("@/views/pms/auman/AumanList.vue");
 
 
-export const constantRouterMap = [
-  {
+export const constantRouterMap = [{
     path: "/login",
     name: "login",
     component: Login,
@@ -51,22 +39,19 @@ export const constantRouterMap = [
   {
     path: "/home",
     component: Layout,
-    children: [
-      {
-        path: "",
-        name: "home",
-        component: Home,
-        meta: {
-          title: "首页",
-          icon: "home",
-        },
+    children: [{
+      path: "",
+      name: "home",
+      component: Home,
+      meta: {
+        title: "首页",
+        icon: "home",
       },
-    ],
+    }, ],
   },
 ];
 
-export const asyncRouterMap = [
-  {
+export const asyncRouterMap = [{
     path: "/pms",
     component: Layout,
     redirect: "/pms/product",
@@ -75,8 +60,7 @@ export const asyncRouterMap = [
       title: "产品",
       icon: "product",
     },
-    children: [
-      {
+    children: [{
         path: "yc",
         name: "yc",
         component: YCList,
@@ -86,11 +70,29 @@ export const asyncRouterMap = [
         },
       },
       {
+        path: "xc",
+        name: "xc",
+        component: XCList,
+        meta: {
+          title: "锡柴",
+          icon: "product-list",
+        },
+      },
+      {
         path: "wc",
         name: "wc",
         component: WCList,
         meta: {
           title: "潍柴",
+          icon: "product-list",
+        },
+      },
+      {
+        path: "auman",
+        name: "auman",
+        component: AumanList,
+        meta: {
+          title: "欧曼",
           icon: "product-list",
         },
       },

@@ -80,12 +80,16 @@
 </template>
 
 <script>
-import { ycProductListApi, ycBatchAddApi, ycBatchExportApi } from "@/api/yc";
+import {
+  aumanProductListApi,
+  aumanBatchAddApi,
+  aumanBatchExportApi,
+} from "@/api/auman";
 
 import ProductOperate from "./components/ProductOperate.vue";
 import ProductDatasheets from "./components/ProductDatasheets.vue";
 export default {
-  name: "YCList",
+  name: "AumanList",
   components: {
     ProductOperate,
     ProductDatasheets,
@@ -128,14 +132,15 @@ export default {
     //  获取商品
     getProductList() {
       this.loading = true;
-      ycProductListApi(this.pageConfig.pageSize, this.pageConfig.pageNum).then(
-        (response) => {
-          console.log(response);
-          this.dataList = response.data.list;
-          this.total = response.data.total;
-          this.loading = false;
-        }
-      );
+      aumanProductListApi(
+        this.pageConfig.pageSize,
+        this.pageConfig.pageNum
+      ).then((response) => {
+        console.log(response);
+        this.dataList = response.data.list;
+        this.total = response.data.total;
+        this.loading = false;
+      });
     },
 
     pageConfigChange(value) {
@@ -190,7 +195,7 @@ export default {
     handleConfirm() {
       let count = this.addCount.count;
       if (count) {
-        ycBatchAddApi(count).then((response) => {
+        aumanBatchAddApi(count).then((response) => {
           this.getProductList();
           this.loading = false;
         });
@@ -202,7 +207,7 @@ export default {
       let count = this.exportCount.count;
       if (count) {
         this.loading = true;
-        ycBatchExportApi(count).then((response) => {
+        aumanBatchExportApi(count).then((response) => {
           this.downloadExcel(response);
           this.loading = false;
         });

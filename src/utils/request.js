@@ -2,17 +2,21 @@
  * @Autor: YuanQiii
  * @GitHub: https://github.com/YuanQiii
  * @Date: 2022-04-02 14:09:20
- * @FilePath: \admin\src\utils\request.js
+ * @FilePath: \SecurityCheck_Admin\src\utils\request.js
  */
 import axios from "axios";
-import { Message } from "element-ui";
+import {
+  Message
+} from "element-ui";
 import store from "@/store";
-import { getToken, removeToken } from "@/utils/auth";
+import {
+  getToken,
+  removeToken
+} from "@/utils/auth";
 
 // 创建axios实例
 const service = axios.create({
-  // baseURL: "http://www.qcpjfwcx.com:8099/api/index/", // api的base_url
-  baseURL: "http://127.0.0.1:8000/api/summery/", // api的base_url
+  baseURL: process.env.NODE_ENV === 'production' ? "http://www.qcpjfwcx.com:8099/api/index/" : "http://127.0.0.1:8000/api/index/",
   timeout: 30000, // 请求超时时间
   headers: {
     "Content-Type": "application/json",

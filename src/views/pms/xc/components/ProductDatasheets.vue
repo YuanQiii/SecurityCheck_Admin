@@ -2,7 +2,7 @@
  * @Author: YuanQiii
  * @GitHub: https://github.com/YuanQiii
  * @Date: 2022-04-05 16:52:10
- * @FilePath: \SecurityCheck_Admin\src\views\pms\yc\components\ProductDatasheets.vue
+ * @FilePath: \SecurityCheck_Admin\src\views\pms\xc\components\ProductDatasheets.vue
 -->
 <template>
   <div class="product-datasheets">
@@ -23,8 +23,14 @@
         <el-table-column label="id" align="center" width="100">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column label="序列码" align="center" width="94">
+        <el-table-column label="序列码" align="center" width="110">
           <template slot-scope="scope">{{ scope.row.sequenceCode }}</template>
+        </el-table-column>
+        <el-table-column label="区块编号" align="center" width="90">
+          <template slot-scope="scope">{{ scope.row.blockchainCode }}</template>
+        </el-table-column>
+        <el-table-column label="区块Hash" align="center">
+          <template slot-scope="scope">{{ scope.row.blockchainHash }}</template>
         </el-table-column>
         <el-table-column label="公司" width="60" align="center">
           <template slot-scope="scope">{{ scope.row.company }}</template>
